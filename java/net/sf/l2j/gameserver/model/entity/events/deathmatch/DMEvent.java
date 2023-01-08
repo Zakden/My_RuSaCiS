@@ -471,9 +471,6 @@ public class DMEvent
 		// Opens all doors specified in configs for DM
 		openDoors(Config.DM_DOORS_IDS_TO_CLOSE);
 		
-		// Closes all doors specified in Configs for DM
-		closeDoors(Config.DM_DOORS_IDS_TO_OPEN);
-		
 		String[] topPositions;
 		String htmltext = "";
 		if (Config.DM_SHOW_TOP_RANK)
