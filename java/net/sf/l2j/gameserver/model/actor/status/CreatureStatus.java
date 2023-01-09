@@ -668,6 +668,7 @@ public class CreatureStatus<T extends Creature>
 	 */
 	public int getPAtk(Creature target)
 	{
+		if (_actor.isRaidRelated()) return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBasePAtk() * Config.RAID_ATTACK_MULTIPLIER, target, null);
 		return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBasePAtk() * ((_actor.isChampion()) ? Config.CHAMPION_ATK : 1), target, null);
 	}
 	

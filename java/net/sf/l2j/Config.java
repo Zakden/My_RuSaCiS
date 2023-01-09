@@ -496,6 +496,8 @@ public final class Config
 	public static double RAID_HP_REGEN_MULTIPLIER;
 	public static double RAID_MP_REGEN_MULTIPLIER;
 	public static double RAID_DEFENCE_MULTIPLIER;
+
+	public static double RAID_ATTACK_MULTIPLIER;
 	public static int RAID_MINION_RESPAWN_TIMER;
 	
 	public static boolean RAID_DISABLE_CURSE;
@@ -2179,6 +2181,7 @@ public final class Config
 		RAID_HP_REGEN_MULTIPLIER = npcs.getProperty("RaidHpRegenMultiplier", 1.);
 		RAID_MP_REGEN_MULTIPLIER = npcs.getProperty("RaidMpRegenMultiplier", 1.);
 		RAID_DEFENCE_MULTIPLIER = npcs.getProperty("RaidDefenceMultiplier", 1.);
+		RAID_ATTACK_MULTIPLIER = npcs.getProperty("RaidAttackMultiplier", 1.);
 		RAID_MINION_RESPAWN_TIMER = npcs.getProperty("RaidMinionRespawnTime", 300000);
 		
 		RAID_DISABLE_CURSE = npcs.getProperty("DisableRaidCurse", false);

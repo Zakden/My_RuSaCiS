@@ -345,6 +345,12 @@ public class PlayerCast extends PlayableCast<Player>
 						_actor.sendPacket(SystemMessageId.SWEEP_NOT_ALLOWED);
 						return false;
 					}
+
+					if (spoilerId != _actor.getObjectId()) //Sweep Bug Removed
+					{
+						_actor.sendPacket(SystemMessageId.SWEEP_NOT_ALLOWED);
+						return false;
+					}
 				}
 				break;
 			
