@@ -551,6 +551,8 @@ public final class Config
 	public static boolean OFFLINE_DISCONNECT_FINISHED;
 	public static boolean OFFLINE_SLEEP_EFFECT;
 	public static boolean RESTORE_STORE_ITEMS;
+
+	public static int OFFLINE_LEVEL;
 	
 	// --------------------------------------------------
 	// Players
@@ -962,6 +964,7 @@ public final class Config
 		OFFLINE_DISCONNECT_FINISHED = offline.getProperty("OfflineDisconnectFinished", true);
 		OFFLINE_SLEEP_EFFECT = offline.getProperty("OfflineSleepEffect", true);
 		RESTORE_STORE_ITEMS = offline.getProperty("RestoreStoreItems", false);
+		OFFLINE_LEVEL = offline.getProperty("OfflineLevel", 1);
 	}
 	
 	/**

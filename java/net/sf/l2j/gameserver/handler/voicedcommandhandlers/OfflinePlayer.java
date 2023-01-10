@@ -33,6 +33,13 @@ public class OfflinePlayer implements IVoicedCommandHandler // TODO: Rewrite thi
 			player.sendPacket(ActionFailed.STATIC_PACKET);
 			return false;
 		}
+
+		if(player.getStatus().getLevel() < Config.OFFLINE_LEVEL)
+		{
+			player.sendMessage(new CustomMessage("OFFLINE_LOW_LEVEL"));
+			player.sendPacket(ActionFailed.STATIC_PACKET);
+			return false;
+		}
 		
 		final TradeList storeListBuy = player.getBuyList();
 		if (storeListBuy == null)

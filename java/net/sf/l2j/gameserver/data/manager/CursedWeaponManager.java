@@ -105,7 +105,8 @@ public class CursedWeaponManager implements IXmlReader
 	 */
 	public synchronized void checkDrop(Attackable attackable, Player player)
 	{
-		if (attackable instanceof SiegeGuard || attackable instanceof RiftInvader || attackable instanceof FestivalMonster || attackable instanceof GrandBoss || attackable instanceof FeedableBeast)
+		if (attackable instanceof SiegeGuard || attackable instanceof RiftInvader || attackable instanceof FestivalMonster
+				|| attackable instanceof GrandBoss || attackable instanceof FeedableBeast || attackable.getTemplate().getLevel() < 20)
 			return;
 		
 		for (CursedWeapon cw : _cursedWeapons.values())
