@@ -59,23 +59,25 @@ public class PolymorphingOnAttack extends AttackableAIScript
 	}
 	
 	@Override
-	public void onAttacked(Npc npc, Creature attacker, int damage, L2Skill skill)
+	public void onAttacked(final Npc npc, final Creature attacker, final int damage, L2Skill skill)
 	{
 		if (npc.isVisible() && !npc.isDead())
 		{
 			final List<Integer> tmp = MOBSPAWNS.get(npc.getNpcId());
 			if (tmp != null)
 			{
-				if (npc.getStatus().getHpRatio() * 100 <= tmp.get(1) && Rnd.get(100) < tmp.get(2))
+				//if (npc.getStatus().getHp() * 100 <= tmp.get(1) && Rnd.get(100) < tmp.get(2))
+				if (npc.getStatus().getHp() <= npc.getStatus().getMaxHp() * tmp.get(1) / 100.0 && Rnd.get(100) < tmp.get(2))
 				{
 					if (tmp.get(3) >= 0)
 						npc.broadcastNpcSay(Rnd.get(MOBTEXTS));
 					
 					npc.getSpawn().onDecay(npc);
+					//npc.onDecay();
 					npc.deleteMe();
 					
 					final Npc newNpc = addSpawn(tmp.get(0), npc, false, 0, true);
-					newNpc.forceAttack(attacker, 200);
+					newNpc.forceAttack(attacker, 500);
 				}
 			}
 		}

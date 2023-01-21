@@ -608,6 +608,7 @@ public class FeedableBeasts extends AttackableAIScript
 		if (GROWTH_CAPABLE_MOBS.get(npcId).getGrowthLevel() == 0)
 		{
 			npc.getSpawn().onDecay(npc);
+			//npc.onDecay();
 			npc.deleteMe();
 		}
 		else

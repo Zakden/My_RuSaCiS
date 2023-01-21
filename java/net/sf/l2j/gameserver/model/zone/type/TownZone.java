@@ -1,8 +1,11 @@
 package net.sf.l2j.gameserver.model.zone.type;
 
+import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.enums.ZoneId;
 import net.sf.l2j.gameserver.model.actor.Creature;
+import net.sf.l2j.gameserver.model.actor.Player;
 import net.sf.l2j.gameserver.model.zone.type.subtype.SpawnZoneType;
+import net.sf.l2j.gameserver.model.zone.type.subtype.ZoneType;
 
 /**
  * A zone extending {@link SpawnZoneType}, used by towns. A town zone is generally associated to a castle for taxes.
@@ -35,9 +38,12 @@ public class TownZone extends SpawnZoneType
 	@Override
 	protected void onEnter(Creature character)
 	{
-		if (_isPeaceZone)
-			character.setInsideZone(ZoneId.PEACE, true);
+		if (Config.ZONE_TOWN == 1 && character instanceof Player && ((Player) character).getSiegeState() != 0)
+			return;
 		
+		if (_isPeaceZone && Config.ZONE_TOWN != 2)
+			character.setInsideZone(ZoneId.PEACE, true);
+		//System.out.println("onEnter Town");
 		character.setInsideZone(ZoneId.TOWN, true);
 	}
 	
@@ -46,7 +52,7 @@ public class TownZone extends SpawnZoneType
 	{
 		if (_isPeaceZone)
 			character.setInsideZone(ZoneId.PEACE, false);
-		
+		//System.out.println("onExit Town");
 		character.setInsideZone(ZoneId.TOWN, false);
 	}
 	

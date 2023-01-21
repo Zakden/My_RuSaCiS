@@ -101,12 +101,14 @@ public class OfflinePlayer implements IVoicedCommandHandler // TODO: Rewrite thi
 			if (playerParty != null)
 				player.getParty().broadcastToPartyMembers(player, SystemMessage.sendString(player.getName() + new CustomMessage("OFFLINE_REMOVED_FESTIVAL")));
 		}
-		
+
 		if (!OfflineTradersTable.offlineMode(player))
 		{
 			player.sendMessage(new CustomMessage("OFFLINE_LOGOUT"));
 			return false;
 		}
+
+
 		
 		if (player.isInStoreMode() && Config.OFFLINE_TRADE_ENABLE || player.isCrafting() && Config.OFFLINE_CRAFT_ENABLE)
 		{

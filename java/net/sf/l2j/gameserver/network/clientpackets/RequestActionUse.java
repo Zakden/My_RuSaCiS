@@ -151,7 +151,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				break;
 			
 			case 16:
-			case 22: // Attack (pet attack)
+			case 22, 1099: // Attack (pet attack) 1099 my edit
 				if (target == null || summon == null || summon == target || player == target)
 					return;
 				
@@ -444,7 +444,7 @@ public final class RequestActionUse extends L2GameClientPacket
 				
 				useSkill(5111, target);
 				break;
-			
+
 			default:
 				LOGGER.warn("Unhandled action type {} detected for {}.", _actionId, player.getName());
 		}

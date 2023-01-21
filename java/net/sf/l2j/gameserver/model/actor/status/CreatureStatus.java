@@ -14,6 +14,7 @@ import net.sf.l2j.gameserver.enums.skills.ElementType;
 import net.sf.l2j.gameserver.enums.skills.Stats;
 import net.sf.l2j.gameserver.model.actor.Creature;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.actor.instance.GrandBoss;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
 import net.sf.l2j.gameserver.network.serverpackets.StatusUpdate;
 import net.sf.l2j.gameserver.skills.Calculator;
@@ -640,6 +641,8 @@ public class CreatureStatus<T extends Creature>
 	 */
 	public int getMAtk(Creature target, L2Skill skill)
 	{
+		if(_actor instanceof GrandBoss) return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBaseMAtk() * Config.GRANDBOSS_ATTACK_MULTIPLIER, target, null);
+		if (_actor.isRaidRelated()) return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBaseMAtk() * Config.RAID_ATTACK_MULTIPLIER, target, null);
 		return (int) calcStat(Stats.MAGIC_ATTACK, _actor.getTemplate().getBaseMAtk() * ((_actor.isChampion()) ? Config.CHAMPION_ATK : 1), target, skill);
 	}
 	
@@ -668,6 +671,7 @@ public class CreatureStatus<T extends Creature>
 	 */
 	public int getPAtk(Creature target)
 	{
+		if(_actor instanceof GrandBoss) return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBasePAtk() * Config.GRANDBOSS_ATTACK_MULTIPLIER, target, null);
 		if (_actor.isRaidRelated()) return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBasePAtk() * Config.RAID_ATTACK_MULTIPLIER, target, null);
 		return (int) calcStat(Stats.POWER_ATTACK, _actor.getTemplate().getBasePAtk() * ((_actor.isChampion()) ? Config.CHAMPION_ATK : 1), target, null);
 	}

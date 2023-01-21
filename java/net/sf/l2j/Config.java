@@ -496,8 +496,9 @@ public final class Config
 	public static double RAID_HP_REGEN_MULTIPLIER;
 	public static double RAID_MP_REGEN_MULTIPLIER;
 	public static double RAID_DEFENCE_MULTIPLIER;
-
 	public static double RAID_ATTACK_MULTIPLIER;
+
+	public static double GRANDBOSS_ATTACK_MULTIPLIER;
 	public static int RAID_MINION_RESPAWN_TIMER;
 	
 	public static boolean RAID_DISABLE_CURSE;
@@ -553,6 +554,9 @@ public final class Config
 	public static boolean RESTORE_STORE_ITEMS;
 
 	public static int OFFLINE_LEVEL;
+
+	public static String OFFLINE_STORE_NAME;
+	public static List<String> OFFLINE_STORE_NAMES_LIST = new ArrayList<>();
 	
 	// --------------------------------------------------
 	// Players
@@ -755,6 +759,7 @@ public final class Config
 	public static double PREMIUM_RATE_QUEST_REWARD_ADENA;
 	
 	public static double RATE_DROP_HERBS;
+	public static double RATE_DROP_SEALSTONE;
 	public static int RATE_DROP_MANOR;
 	
 	public static double RATE_QUEST_DROP;
@@ -965,6 +970,10 @@ public final class Config
 		OFFLINE_SLEEP_EFFECT = offline.getProperty("OfflineSleepEffect", true);
 		RESTORE_STORE_ITEMS = offline.getProperty("RestoreStoreItems", false);
 		OFFLINE_LEVEL = offline.getProperty("OfflineLevel", 1);
+		OFFLINE_STORE_NAME = offline.getProperty("OfflineStoreNames", "");
+		OFFLINE_STORE_NAMES_LIST = new ArrayList<>();
+		for (String name : OFFLINE_STORE_NAME.split(","))
+			OFFLINE_STORE_NAMES_LIST.add(name.toLowerCase());
 	}
 	
 	/**
@@ -2185,6 +2194,7 @@ public final class Config
 		RAID_MP_REGEN_MULTIPLIER = npcs.getProperty("RaidMpRegenMultiplier", 1.);
 		RAID_DEFENCE_MULTIPLIER = npcs.getProperty("RaidDefenceMultiplier", 1.);
 		RAID_ATTACK_MULTIPLIER = npcs.getProperty("RaidAttackMultiplier", 1.);
+		GRANDBOSS_ATTACK_MULTIPLIER = npcs.getProperty("GrandBossAttackMultiplier", 1.);
 		RAID_MINION_RESPAWN_TIMER = npcs.getProperty("RaidMinionRespawnTime", 300000);
 		
 		RAID_DISABLE_CURSE = npcs.getProperty("DisableRaidCurse", false);
@@ -2545,6 +2555,7 @@ public final class Config
 		PREMIUM_RATE_QUEST_REWARD_ADENA = rates.getProperty("PremiumRateQuestRewardAdena", 2.);
 		
 		RATE_DROP_HERBS = rates.getProperty("RateDropHerbs", 1.);
+		RATE_DROP_SEALSTONE = rates.getProperty("RateDropSealstones", 1.);
 		RATE_DROP_MANOR = rates.getProperty("RateDropManor", 1);
 		RATE_QUEST_DROP = rates.getProperty("RateQuestDrop", 1.);
 		RATE_QUEST_REWARD = rates.getProperty("RateQuestReward", 1.);

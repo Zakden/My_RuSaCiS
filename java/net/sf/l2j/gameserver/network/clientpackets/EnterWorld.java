@@ -110,7 +110,7 @@ public class EnterWorld extends L2GameClientPacket
 		// Set dead status if applies
 		if (player.getStatus().getHp() < 0.5 && player.isMortal())
 			player.setIsDead(true);
-		
+
 		if (player.isNameColor() != 0)
 			player.getAppearance().setNameColor(player.isNameColor());
 		

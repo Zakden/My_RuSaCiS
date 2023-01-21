@@ -249,6 +249,15 @@ public final class OfflineTradersTable
 				final Player player = Player.restore(rs.getInt("charId"));
 				if (player == null)
 					continue;
+
+				/*if(Config.OFFLINE_STORE_NAMES_LIST.contains(player.getSellList().getTitle())
+						|| Config.OFFLINE_STORE_NAMES_LIST.contains(player.getBuyList().getTitle())
+						|| Config.OFFLINE_STORE_NAMES_LIST.contains(player.getManufactureList().getStoreName()))
+				{
+					LOGGER.warn("PrivateStore with id "+ rs.getInt("type") + player.getName() + " is Advert.");
+					continue;
+				} //my edit */
+
 				
 				try (PreparedStatement stm_items = con.prepareStatement(LOAD_OFFLINE_ITEMS))
 				{
@@ -347,7 +356,7 @@ public final class OfflineTradersTable
 				canSetShop = Config.OFFLINE_CRAFT_ENABLE;
 				break;
 		}
-		
+
 		if (Config.OFFLINE_MODE_IN_PEACE_ZONE && !player.isInsideZone(ZoneId.PEACE))
 			canSetShop = false;
 		

@@ -116,8 +116,14 @@ public class CreatureCast<T extends Creature>
 				hitTime = (int) (0.70 * hitTime);
 				coolTime = (int) (0.70 * coolTime);
 			}
+			//added 12.01.23
+			if (_actor.getActingPlayer() != null && !_actor.getActingPlayer().isMageClass())
+			{
+				if (skill.getHitTime() >= 500 && hitTime < 500)
+					hitTime = 500;
+			}
 		}
-		
+
 		int reuseDelay = skill.getReuseDelay();
 		if (!skill.isStaticReuse())
 		{

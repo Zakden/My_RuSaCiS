@@ -117,8 +117,17 @@ public class DropCategory
 				{
 					final DropData item = list[i];
 					if (item != null)
+					{
+						if(getDropType() == DropType.SPOIL)
+						{
+							if (calcDropItem(item, player, monster, out, raid))
+								continue; // The Spoil will be up to 3 items
+						}
+
 						if (calcDropItem(item, player, monster, out, raid))
-							break;
+							break; // if continue drop has been all items
+					}
+
 				}
 			}
 			else
@@ -126,7 +135,7 @@ public class DropCategory
 				for (final DropData item : _drops)
 				{
 					if (calcDropItem(item, player, monster, out, raid))
-						break;
+						break; //edit break before continue after
 				}
 			}
 		}

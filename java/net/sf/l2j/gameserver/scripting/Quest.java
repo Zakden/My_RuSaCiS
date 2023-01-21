@@ -993,7 +993,7 @@ public class Quest
 	 * @param itemCount : Quantity of items to add.
 	 * @param enchantLevel : Enchant level of items to add.
 	 */
-	public static void giveItems(Player player, int itemId, int itemCount, int enchantLevel)
+	public static synchronized void giveItems(Player player, int itemId, int itemCount, int enchantLevel)
 	{
 		// Incorrect amount.
 		if (itemCount <= 0)

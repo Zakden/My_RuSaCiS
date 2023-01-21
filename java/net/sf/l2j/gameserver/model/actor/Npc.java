@@ -37,7 +37,9 @@ import net.sf.l2j.gameserver.enums.actors.NpcTalkCond;
 import net.sf.l2j.gameserver.enums.items.ShotType;
 import net.sf.l2j.gameserver.geoengine.GeoEngine;
 import net.sf.l2j.gameserver.idfactory.IdFactory;
+import net.sf.l2j.gameserver.model.World;
 import net.sf.l2j.gameserver.model.WorldObject;
+import net.sf.l2j.gameserver.model.WorldRegion;
 import net.sf.l2j.gameserver.model.actor.ai.type.NpcAI;
 import net.sf.l2j.gameserver.model.actor.status.NpcStatus;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
@@ -377,7 +379,7 @@ public class Npc extends Creature
 		DecayTaskManager.getInstance().add(this, getTemplate().getCorpseTime());
 		
 		for (Quest quest : getTemplate().getEventQuests(EventHandler.MY_DYING))
-			quest.onMyDying(this, killer);
+			ThreadPool.schedule(() -> quest.onMyDying(this, killer), 3000);
 		
 		// Party aggro (minion/master).
 		if (isMaster() || hasMaster())
@@ -482,11 +484,23 @@ public class Npc extends Creature
 	public void deleteMe()
 	{
 		// Decay
-		onDecay();
+		try //my edit
+		{
+			onDecay();
+		}
+		catch (Exception e) //my edit
+		{
+			System.out.println("Failed OnDecay()." + e);
+		}
 		
 		DecayTaskManager.getInstance().cancel(this);
 		stopAllEffects();
-		
+
+		WorldRegion oldRegion = getRegion();
+		if (oldRegion != null)
+			oldRegion.removeFromZones(this);
+
+		World.getInstance().removeObject(this); //my edit
 		super.deleteMe();
 	}
 	
@@ -616,19 +630,22 @@ public class Npc extends Creature
 	 */
 	public boolean isInMyTerritory()
 	{
+		final Npc master = getMaster();
+		if (master != null)
+			return master.isInMyTerritory(); // Maybe Fix on fishing, when mob is spawn
 		return _spawn.isInMyTerritory(this);
 	}
 	
-	public void scheduleRespawn(long delay)
+	public synchronized void scheduleRespawn(long delay)
 	{
 		_respawnTask = ThreadPool.schedule(() ->
 		{
-			if (_spawn != null)
-				_spawn.doRespawn(this);
+		if (_spawn != null)
+			_spawn.doRespawn(this);
 		}, delay);
 	}
 	
-	public void cancelRespawn()
+	public synchronized void cancelRespawn() //add synchronized
 	{
 		if (_respawnTask != null)
 		{
@@ -641,12 +658,12 @@ public class Npc extends Creature
 	{
 		ThreadPool.schedule(() ->
 		{
-			if (!isDecayed())
-				deleteMe();
+		if (!isDecayed())
+			deleteMe();
 		}, delay);
 	}
 	
-	public boolean isDecayed()
+	public synchronized boolean isDecayed() //add synchronized
 	{
 		return _isDecayed;
 	}

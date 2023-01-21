@@ -649,7 +649,8 @@ public class Q348_AnArrogantSearch extends Quest
 	{
 		final Player player = killer.getActingPlayer();
 		
-		final QuestState st = checkPlayerState(player, npc, QuestStatus.STARTED);
+		//final QuestState st = checkPlayerState(player, npc, QuestStatus.STARTED);
+		final QuestState st = getRandomPartyMemberState(player, npc, QuestStatus.STARTED);
 		if (st == null)
 			return;
 		

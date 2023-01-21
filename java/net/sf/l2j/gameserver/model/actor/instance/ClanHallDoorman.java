@@ -74,19 +74,6 @@ public class ClanHallDoorman extends Doorman
 			if (player.mount(12621, 0))
 				sendHtm(player, "4");
 		}
-		else if (command.startsWith("Chat"))
-		{
-			String val = "1"; // Default send you to error HTM.
-			try
-			{
-				val = command.substring(5);
-			}
-			catch (IndexOutOfBoundsException ioobe)
-			{
-			}
-			
-			sendHtm(player, val);
-		}
 		else if (command.startsWith("open_doors"))
 		{
 			if (isOwnerClan(player))
@@ -113,6 +100,8 @@ public class ClanHallDoorman extends Doorman
 					closeDoors(player, command);
 			}
 		}
+		else if (command.startsWith("Chat"))
+			showChatWindow(player);
 	}
 	
 	@Override
@@ -128,7 +117,7 @@ public class ClanHallDoorman extends Doorman
 		final Clan owner = ClanTable.getInstance().getClan(getClanHall().getOwnerId());
 		if (isOwnerClan(player))
 		{
-			if (player.isClanLeader() && getClanHall().getId() == 36 || getClanHall().getId() == 37 || getClanHall().getId() == 38 || getClanHall().getId() == 39 || getClanHall().getId() == 40 || getClanHall().getId() == 41) // TODO: rewrite
+			if (player.isClanLeader() && getClanHall().getId() >= 36 && getClanHall().getId() <= 41)
 				html.setFile(player.isLang() + "clanHallDoormen/doormen-owner.htm");
 			else
 				html.setFile(player.isLang() + "clanHallDoormen/doormen.htm");

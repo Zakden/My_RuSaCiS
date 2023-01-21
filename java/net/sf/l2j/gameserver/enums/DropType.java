@@ -3,12 +3,14 @@ package net.sf.l2j.gameserver.enums;
 import net.sf.l2j.Config;
 import net.sf.l2j.gameserver.model.actor.Npc;
 import net.sf.l2j.gameserver.model.actor.Player;
+import net.sf.l2j.gameserver.model.item.DropData;
 
 public enum DropType
 {
 	SPOIL,
 	CURRENCY,
 	DROP,
+	SEALSTONE,
 	HERB;
 	
 	public double getDropRate(Player player, Npc npc, boolean isRaid, boolean isGrand)
@@ -29,7 +31,7 @@ public enum DropType
 				
 				if (player.getPremiumService() == 1)
 					return Config.PREMIUM_RATE_DROP_CURRENCY;
-				
+
 				return Config.RATE_DROP_CURRENCY;
 			
 			case DROP:
@@ -58,7 +60,10 @@ public enum DropType
 					
 					return Config.RATE_DROP_ITEMS;
 				}
-				
+
+			case SEALSTONE:
+				return Config.RATE_DROP_SEALSTONE;
+
 			case HERB:
 				return Config.RATE_DROP_HERBS;
 			

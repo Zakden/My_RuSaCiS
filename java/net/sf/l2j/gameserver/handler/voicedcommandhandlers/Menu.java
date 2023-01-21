@@ -34,7 +34,7 @@ public class Menu implements IVoicedCommandHandler
 			String addcmd = command.substring(9).trim();
 			if (addcmd.startsWith("exp"))
 			{
-				if (player.getStatus().getLevel() < Config.NEWBIE_MAX_LEVEL)
+				if (player.getStatus().getLevel() < Config.NEWBIE_MAX_LEVEL && player.isStopExp())
 				{
 					player.sendMessage(new CustomMessage("LOW_LVL"));
 					showHtm(player);

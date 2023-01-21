@@ -130,13 +130,12 @@ public class HeavyMedal extends ScheduledQuest
 		if (npc instanceof Monster)
 		{
 			final Monster mob = (Monster) npc;
+			if (mob == null) return;
+
 			if (mob.isRaidBoss())
 				return;
 
-			if (mob.getStatus().getLevel() < 20)
-				return;
-
-			if (player.getStatus().getLevel() - mob.getStatus().getLevel() > 8)
+			if (mob.getStatus().getLevel() < 20 || player.getStatus().getLevel() - mob.getStatus().getLevel() > 8)
 				return;
 			
 			if (Rnd.get(100) < EVENT_MEDAL_CHANCE)

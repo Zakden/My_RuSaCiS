@@ -1,12 +1,12 @@
 package net.sf.l2j.gameserver.taskmanager;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.pool.ThreadPool;
 
 import net.sf.l2j.gameserver.model.actor.Creature;
-import net.sf.l2j.gameserver.model.actor.Summon;
 import net.sf.l2j.gameserver.model.actor.instance.Monster;
 
 /**
@@ -14,53 +14,42 @@ import net.sf.l2j.gameserver.model.actor.instance.Monster;
  */
 public final class DecayTaskManager implements Runnable
 {
-	private final Map<Creature, Long> _creatures = new ConcurrentHashMap<>();
-	
+	private static final Map<Creature, Long> DECAY_SCHEDULES = new ConcurrentHashMap<>();
+	private static boolean _working = false;
+
 	protected DecayTaskManager()
 	{
 		// Run task each second.
-		ThreadPool.scheduleAtFixedRate(this, 1000, 1000);
+		ThreadPool.scheduleAtFixedRate(this, 0, 1000);
 	}
-	
+
 	@Override
 	public final void run()
 	{
-		// List is empty, skip.
-		if (_creatures.isEmpty())
+		if (_working)
 			return;
-		
-		// Get current time.
+
+		_working = true;
+
 		final long time = System.currentTimeMillis();
-		
-		// Loop all characters.
-		for (Map.Entry<Creature, Long> entry : _creatures.entrySet())
+		for (Entry<Creature, Long> entry : DECAY_SCHEDULES.entrySet())
 		{
-			final Creature creature = entry.getKey();
-			
-			// If decayed creature is a Summon, check if he is still linked to its owner. If not, decay task is canceled.
-			if (creature instanceof Summon && ((Summon) creature).getOwner().getSummon() != creature)
+			if (time > entry.getValue().longValue())
 			{
-				_creatures.remove(creature);
-				continue;
+				final Creature creature = entry.getKey();
+				DECAY_SCHEDULES.remove(creature);
+				creature.onDecay();
 			}
-			
-			// Time hasn't passed yet, skip.
-			if (time < entry.getValue())
-				continue;
-			
-			// Decay the Creature.
-			creature.onDecay();
-			
-			// Remove the entry.
-			_creatures.remove(creature);
 		}
+
+		_working = false;
 	}
-	
+
 	public final Long get(Creature creature)
 	{
-		return _creatures.get(creature);
+		return DECAY_SCHEDULES.get(creature);
 	}
-	
+
 	/**
 	 * Adds a {@link Creature} to the {@link DecayTaskManager} with additional interval.
 	 * @param creature : The {@link Creature} to be added.
@@ -72,15 +61,15 @@ public final class DecayTaskManager implements Runnable
 		if (creature instanceof Monster)
 		{
 			final Monster monster = ((Monster) creature);
-			
+
 			// If Monster is spoiled or seeded, double the corpse delay.
 			if (monster.getSpoilState().isSpoiled() || monster.getSeedState().isSeeded())
 				interval *= 2;
 		}
-		
-		_creatures.put(creature, System.currentTimeMillis() + interval * 1000);
+
+		DECAY_SCHEDULES.put(creature, System.currentTimeMillis() + interval * 1000);
 	}
-	
+
 	/**
 	 * Removes the {@link Creature} passed as parameter from the {@link DecayTaskManager}.
 	 * @param creature : The {@link Creature} to be removed.
@@ -88,14 +77,14 @@ public final class DecayTaskManager implements Runnable
 	 */
 	public final boolean cancel(Creature creature)
 	{
-		return _creatures.remove(creature) != null;
+		return DECAY_SCHEDULES.remove(creature) != null;
 	}
-	
+
 	public static final DecayTaskManager getInstance()
 	{
 		return SingletonHolder.INSTANCE;
 	}
-	
+
 	private static final class SingletonHolder
 	{
 		protected static final DecayTaskManager INSTANCE = new DecayTaskManager();
